@@ -83,6 +83,11 @@
 			<version>4.4.0</version> <!-- Certifique-se de usar a versão mais recente -->
 		</dependency>
 
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.1.1</version>
+		</dependency>
 
 	</dependencies>
 
