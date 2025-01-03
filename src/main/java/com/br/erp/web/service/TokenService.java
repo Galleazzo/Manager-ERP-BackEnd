@@ -2,6 +2,7 @@ package com.br.erp.web.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.br.erp.web.model.dto.TokenDTO;
 import com.br.erp.web.types.Role;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -34,16 +35,16 @@ public class TokenService {
         ALGORITHM = Algorithm.HMAC256(SECRET_KEY.getEncoded());
     }
 
-    public String generateToken(Authentication authentication) {
+    public TokenDTO generateToken(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-
-        return JWT.create()
+        Date expirationDate = new Date(System.currentTimeMillis() + EXPIRATION_TIME);
+        return new TokenDTO(JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .withClaim("roles", user.getAuthorities().stream()
                         .map(Object::toString)
                         .toList())
-                .sign(ALGORITHM);
+                .sign(ALGORITHM), expirationDate.toString());
     }
 
     public Claims validateToken(String token) {

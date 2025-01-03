@@ -2,6 +2,7 @@ package com.br.erp.web.controller;
 
 import com.br.erp.web.model.User;
 import com.br.erp.web.model.dto.LoginRequest;
+import com.br.erp.web.model.dto.TokenDTO;
 import com.br.erp.web.repository.UserRepository;
 import com.br.erp.web.service.TokenService;
 import com.br.erp.web.types.Role;
@@ -32,7 +33,7 @@ public class AuthController {
     private BCryptPasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest) {
+    public TokenDTO login(@RequestBody LoginRequest loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
