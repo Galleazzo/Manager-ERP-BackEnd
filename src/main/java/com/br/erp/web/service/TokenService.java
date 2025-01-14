@@ -44,7 +44,7 @@ public class TokenService {
                 .withClaim("roles", user.getAuthorities().stream()
                         .map(Object::toString)
                         .toList())
-                .sign(ALGORITHM), expirationDate.toString());
+                .sign(ALGORITHM), expirationDate.toInstant().toString());
     }
 
     public Claims validateToken(String token) {
