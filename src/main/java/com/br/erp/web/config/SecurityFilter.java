@@ -33,7 +33,12 @@ public class SecurityFilter extends OncePerRequestFilter {
         String header = request.getHeader("Authorization");
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
-            Claims claims = tokenService.validateToken(token);
+            Claims claims;
+            try {
+                claims = tokenService.validateToken(token);
+            }catch (Exception e) {
+                throw new RuntimeException("Token invalido, por favor, faça login novamente");
+            }
             if (claims != null) {
                 String username = claims.getSubject();
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
