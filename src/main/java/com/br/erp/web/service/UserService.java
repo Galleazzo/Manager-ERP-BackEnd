@@ -4,13 +4,16 @@ import com.br.erp.web.model.User;
 import com.br.erp.web.model.dto.CreateUserDTO;
 import com.br.erp.web.model.dto.UserDTO;
 import com.br.erp.web.repository.UserRepository;
+import com.br.erp.web.types.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -40,9 +43,16 @@ public class UserService {
         if (userRepository.existsByUsername(createUserDTO.getUsername())) {
             throw new RuntimeException("Username already exists");
         }
-
         User user = modelMapper.map(createUserDTO, User.class);
-        user.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
+        if (createUserDTO.getPassword() == null) {
+            user.setPassword(null);
+        } else {
+            user.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
+        }
+        Set<Role> rolesSet = new HashSet<>();
+        rolesSet.add(Role.EMPLOYEE_ROLE);
+        user.setRoles(rolesSet);
+        user.setFirstAccess(true);
         user = userRepository.save(user);
 
         return modelMapper.map(user, UserDTO.class);

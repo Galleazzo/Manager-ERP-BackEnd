@@ -20,6 +20,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
+    @Column(name = "firstAccess")
+    private Boolean firstAccess = true;
+
     public User(){}
 
     public Long getId() {
@@ -52,5 +55,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public boolean isFirstAccess() {
+        return firstAccess;
+    }
+
+    public void setFirstAccess(Boolean firstAccess) {
+        this.firstAccess = firstAccess;
     }
 }
