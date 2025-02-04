@@ -1,6 +1,7 @@
 package com.br.erp.web.controller;
 
 import com.br.erp.web.model.dto.CreateUserDTO;
+import com.br.erp.web.model.dto.NewUserDTO;
 import com.br.erp.web.model.dto.UserDTO;
 import com.br.erp.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @GetMapping("/findByUsername")
+    public ResponseEntity<UserDTO> findByUsername(@RequestBody NewUserDTO newUserDTO) {
+        return ResponseEntity.ok(this.userService.getUserByUserName(newUserDTO));
     }
 
     @GetMapping("/{id}")
